@@ -1,1 +1,1 @@
-web: DEBUG=boatslist:* npm start
+web: node app.js
