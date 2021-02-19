@@ -1,0 +1,1 @@
+web: DEBUG=boatslist:* npm start
