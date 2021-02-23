@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  .row.justify-content-md-center
+    .col.col-lg-5
+      .row
+        .col
+          h1.text-center= title
+      .row
+        .col
+          form(method="post")
+            .mb-3
+              label.form-label(for="email") Email:
+              input#email.form-control(type="email", name="email")
+            .mb-3
+              button.col-lg-5.offset-md-7.btn.btn-primary= title

@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  .row.justify-content-md-center
+    .col.col-lg-5
+      .row
+        .col
+          h1.text-center= title
+      .row.text-center.mb-4.mt-4
+        .col
+          button.btn.btn-circle.btn-apple
+            i.fab.fa-apple
+        .col
+          button.btn.btn-circle.btn-google
+            i.fab.fa-google
+        .col
+          button.btn.btn-circle.btn-twitter
+            i.fab.fa-twitter
+        .col
+          button.btn.btn-circle.btn-github
+            i.fab.fa-github
+      .row.text-center
+        .col
+          p You can also use your email address
+      .row
+        .col
+          form(method="post")
+            .mb-3
+              label.form-label(for="email") Email:
+              input#email.form-control(type="email", name="email")
+            .mb-3
+              label.form-label(for="password") Password:
+              input#email.form-control(type="password", name="password")
+            .mb-3
+              if show_password_forgotten_link
+                a.btn.btn-link.col-lg-5.btn-sm(href='/user/reset') Forgot your password?
+              else 
+                a.btn.btn-link.col-lg-5.btn-sm(href='/user/login') Already have an account?
+              button.col-lg-5.offset-md-2.btn.btn-primary= title

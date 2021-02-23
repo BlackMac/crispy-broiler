@@ -1,8 +1,111 @@
+:root {
+  --accent: #FE5454;
+  --accent-dark: #da4646;
+  --background: #ffffff;
+  --light-grey: #eeeeee;
+  --medium-grey: #666666;
+}
+
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+.btn-outline-primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
 a {
   color: #00B7FF;
+}
+
+h1 {
+  color: var(--accent);
+  font-size: 28px;
+}
+
+.btn.btn-circle {
+  width: 42px;
+  height:42px;
+  border-radius:50%;
+  border: 1px solid var(--light-grey);
+  color: var(--medium-grey);
+  overflow:hidden;
+}
+
+.btn.btn-circle.btn-facebook:hover {
+  background-color: rgba(66, 103, 178, 0.2);
+}
+
+.btn.btn-circle.btn-facebook:focus {
+  background-color: rgba(66, 103, 178, 1);
+  color:#ffffff;
+}
+
+.btn.btn-circle.btn-google:hover {
+  background-color: rgba(219,68,55, 0.2);
+}
+
+.btn.btn-circle.btn-google:focus {
+  background-color: rgba(219,68,55, 1);
+  color:#ffffff;
+}
+
+
+.btn.btn-circle.btn-twitter:hover {
+  background-color: rgba(29,161,242, 0.2);
+
+}
+
+.btn.btn-circle.btn-twitter:focus {
+  background-color: rgba(29,161,242, 1);
+  color:#ffffff;
+}
+
+.btn.btn-circle.btn-github:hover {
+  background-color: rgba(36, 41, 46, 0.2);
+}
+
+.btn.btn-circle.btn-github:focus {
+  background-color: rgba(36, 41, 46, 1);
+  color:#ffffff;
+}
+
+.btn.btn-circle.btn-email:hover {
+  background-color: rgba(25, 132, 105, 0.2);
+}
+
+.btn.btn-circle.btn-email:focus {
+  background-color: rgba(25, 132, 105, 1);
+  color:#ffffff;
+}
+
+.btn.btn-circle.btn-apple:hover {
+  background-color: rgba(85, 85, 85, 0.2);
+}
+
+.btn.btn-circle.btn-apple:focus {
+  background-color: rgba(85, 85, 85, 1);
+  color:#ffffff;
+}
+
+
+.shaded {
+  background-color:rgba(255,0,0,0.1);
 }
