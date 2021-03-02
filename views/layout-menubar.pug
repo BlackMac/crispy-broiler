@@ -1,0 +1,13 @@
+extends layout
+
+block navigation
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        .container-fluid 
+            a.navbar-brand(href='/') <i class="#{config.app.logo}"></i> #{config.app.name}
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link(href='/imprint') Imprint
+                li.nav-item
+                    a.nav-link(href='/user/signup') Sign Up
+                li.nav-item
+                    a.nav-link(href='/user/login') Sign In

@@ -1,5 +1,26 @@
-extends layout
+extends layout-menubar
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .row.p-4
+    .col
+      h1.mt-5 The 
+        strong Boilerplate
+        |  for my 12 startups challenge 
+      p.mt-5 Welcome to #{config.app.name}. This is the boilerplate for my 12 startups challenge,
+        | where I create one startup a month starting with my 42nd birthday.
+      p The rules for all startups are the following: 
+        ul 
+          li Use the same design for all startup websites
+          li Use the same colors except for the main accent color
+          li Use the same tech stack for all startups 
+          li Use ready made graphics ( curtesy of undraw.co )
+          li Use the same payment system ( stripe.com )
+      .row
+        .col.mb-3.mt-5.col-lg-7 
+          form(method="post", action="/user/signup")
+            .input-group
+              input.form-control(type="email",placeholder="Email Address", name="email")
+              button.btn.btn-primary  Sign Up
+
+    .col
+      img.img-fluid(src="/images/websites.svg", alt="", srcset="")

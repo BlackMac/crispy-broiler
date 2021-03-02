@@ -1,6 +1,9 @@
-extends layout
+extends layout-menubar
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  .row.p-4
+      .col
+        h1.mt-5 Error ##{error.code}
+        h2= message
+        code 
+          pre #{error.stack}

@@ -6,8 +6,5 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Home' });
 });
 
-router.get('/imprint', function(req, res, next) {
-  res.render('imprint', { title: 'Imprint' });
-});
 
 module.exports = router;
