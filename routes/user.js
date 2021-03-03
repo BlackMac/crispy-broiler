@@ -6,6 +6,9 @@ const nodemailer = require("nodemailer");
 const markdown = require('nodemailer-markdown').markdown;
 const config = require('../config/config')
 const fs = require('fs');
+const bcrypt = require('bcrypt');
+const { session } = require('passport');
+const SALT_WORK_FACTOR = 10;
 
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_SERVER,
@@ -45,12 +48,31 @@ router.get('/', function(req, res, next) {
 */
 router.get('/login', function(req, res, next) {
   res.render('user/login', { 
-    title: 'Sign In',
+    title: 'Log In',
     show_password_forgotten_link: true });
 });
 
-router.post('/login', function(req, res, next) {
-  return res.send(req.body.email+"-"+req.body.password);
+router.post('/login', function(req, res) {
+  User.find().byEmail(req.body.email).exec((err, user) => {
+    if (err) return next(err);
+    if (!user) {
+      req.session.flash="Login invalid";
+      return res.redirect("/user/login");
+    }
+    console.log(user);
+    bcrypt.compare(req.body.password, user.account.password).then( result => {
+      if (result) {
+        req.session.user = user;
+        res.redirect("/app");
+      } else {
+        req.session.flash="Login invalid";
+        res.redirect("/user/login");
+      }
+    },
+    err => {
+      res.redirect("/user/login");
+    })
+  });
 });
 
 /*
@@ -89,11 +111,30 @@ router.post('/signup', function(req, res, next) {
   
 });
 
+router.get('/logout', function(req, res, next) {
+  req.session.destroy(() => {
+    res.redirect("/");
+  })
+});
+
 router.get('/activate/:id', function(req, res, next) {
-  res.render('user/activate', { title: 'Activate Account' });
+  User.find().byActivationCode(req.params.id).exec((err, user) => {
+    if (err) return next(err)
+    if (!user) return next("Not found")
+    res.render('user/activate', { title: 'Activate Account', email:user.account.email });
+  })
 });
 
 router.post('/activate/:id', function(req, res, next) {
-  res.render('user/activate', { title: 'Activate Account' });
+  User.find().byActivationCode(req.params.id).exec((err, user) => {
+    if (err) return next(err)
+    if (!user) return next("Not found")
+    //user.account.activationcode=undefined;
+    user.account.password=req.body.password;
+    user.save()
+    req.session.user = user;
+    res.redirect("/app")
+  })
+  //res.render('user/activate', { title: 'Activate Account' });
 });
 module.exports = router;

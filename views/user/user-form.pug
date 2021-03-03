@@ -1,11 +1,11 @@
-extends ../layout
+extends ../layout-menubar
 
 block content
   .row.justify-content-md-center
     .col.col-lg-5
       .row
         .col
-          h1.text-center= title
+          h1.mt-5.text-center= title
       .row.text-center.mb-4.mt-4
         .col
           button.btn.btn-circle.btn-apple
@@ -22,6 +22,8 @@ block content
       .row.text-center
         .col
           p You can also use your email address
+      if flash
+        p= flash
       .row
         .col
           form(method="post")

@@ -12,6 +12,7 @@
     "dotenv": "^8.2.0",
     "email-templates": "^8.0.3",
     "express": "~4.16.1",
+    "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "i18next": "^19.8.9",
     "i18next-express-middleware": "^2.0.0",

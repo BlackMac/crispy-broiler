@@ -1,26 +1,45 @@
 require('dotenv').config()
-var mongoose = require('mongoose');
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var config = require('./config/config');
+const mongoose = require('mongoose');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const config = require('./config/config');
+const session = require('express-session')
 
-
-var indexRouter = require('./routes/index');
-var userRouter = require('./routes/user');
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
+const appRouter = require('./routes/app/index');
 //var apiRouter = require('./routes/api');
 
 mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var app = express();
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
+
+if (app.get('env') === 'production') {
+  sess.cookie.secure = true // serve secure cookies
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use((req, res, next) => {
   res.locals.config = config;
+  next();
+});
+
+app.use(function(req, res, next){
+  res.locals.flash = req.session.flash;
+  res.locals.user = req.session.user;
+  delete req.session.flash;
   next();
 });
 
@@ -32,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/app', appRouter);
 //app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler

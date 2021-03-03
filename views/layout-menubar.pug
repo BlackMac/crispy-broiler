@@ -5,9 +5,11 @@ block navigation
         .container-fluid 
             a.navbar-brand(href='/') <i class="#{config.app.logo}"></i> #{config.app.name}
             ul.navbar-nav
-                li.nav-item
-                    a.nav-link(href='/imprint') Imprint
-                li.nav-item
-                    a.nav-link(href='/user/signup') Sign Up
-                li.nav-item
-                    a.nav-link(href='/user/login') Sign In
+                if user
+                    li.nav-item
+                        a.nav-link(href='/app') Dashboard
+                    li.nav-item
+                        a.nav-link(href='/user/logout') Log Out
+                else 
+                    li.nav-item
+                        a.nav-link(href='/user/login') Log In

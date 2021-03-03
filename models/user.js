@@ -35,6 +35,21 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+userSchema.query.byActivationCode = function(activationcode) { 
+  return this.findOne({ "account.activationcode": activationcode }); 
+};
+
+userSchema.query.byEmail = function(email) { 
+  return this.findOne({ "account.email": email }); 
+};
+
+userSchema.statics.findByLoginData = async function(username, password, next) {
+  var user = this;
+  const hash = await bcrypt.hash(password, SALT_WORK_FACTOR)
+  console.log(hash);
+  next(this.findOne({ "account.email": username , "account.password": hash})); 
+};
+
 userSchema.methods.activate = function(activationcode, password, cb) {
   if (this.account.activationcode === activationcode) {
     this.account.password = password
@@ -44,21 +59,11 @@ userSchema.methods.activate = function(activationcode, password, cb) {
 userSchema.pre('save', async function (next) {
   var user = this;
   // only hash the password if it has been modified (or is new)
-  if (!user.account.isModified('.password')) return next();
-  
+  if (!user.isModified('account.password')) return next();
   // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err);
-
-    // hash the password along with our new salt
-    bcrypt.hash(user.account.password, salt, function(err, hash) {
-        if (err) return next(err);
-
-        // override the cleartext password with the hashed one
-        user.account.password = hash;
-        next();
-    });
-  });
+  const hash = await bcrypt.hash(user.account.password, SALT_WORK_FACTOR)
+  user.account.password = hash;
+  next();
 });
 
 module.exports = mongoose.model('User', userSchema);
