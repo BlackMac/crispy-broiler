@@ -9,6 +9,8 @@
     "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "email-templates": "^8.0.3",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "i18next": "^19.8.9",
@@ -21,6 +23,6 @@
     "nodemailer-markdown": "^1.0.3",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "pug": "2.0.0-beta11"
+    "pug": "^3.0.2"
   }
 }

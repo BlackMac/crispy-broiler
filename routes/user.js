@@ -4,25 +4,35 @@ const passport = require('passport');
 const User = require('../models/user');
 const nodemailer = require("nodemailer");
 const markdown = require('nodemailer-markdown').markdown;
+const config = require('../config/config')
+const fs = require('fs');
+
 const transporter = nodemailer.createTransport({
-  host: "s02.speicherzentrum.de",
+  host: process.env.MAIL_SERVER,
   port: 587,
   secure: false, // true for 465, false for other ports
+  requireTLS:true,
   auth: {
-    user: "web2053p1", // generated ethereal user
-    pass: "yhDh1slK", // generated ethereal password
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASSWORD,
   },
+  dkim: {
+    domainName: process.env.MAIL_DKIM_DOMAIN,
+    keySelector: process.env.MAIL_DKIM_KEYSELECTOR,
+    privateKey: process.env.MAIL_DKIM_PK
+  }
 });
 
 transporter.use('compile', markdown())
 
 async function sendMail(address, key) {
   let info = await transporter.sendMail({
-    from: '"Crispy Broiler" <foo@example.com>', // sender address
+    from: `"${config.app.name}" <${config.app.email}>`, // sender address
     to: address, // list of receivers
-    subject: "A warm welcome from Crispy Broiler", // Subject line
-    markdown: `# Hello world!\n\nThis is a **markdown** message ${key} `
+    subject: `A warm welcome from ${config.app.name}`, // Subject line
+    markdown: require('../views/emails/signup')({key})
   });
+  console.log(info);
 }
 
 /* GET users listing. */
@@ -59,17 +69,17 @@ router.get('/signup', function(req, res, next) {
 });
 
 router.post('/signup', function(req, res, next) {
-  console.log(res)
-  if (!req.body.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+  if (!req.body.email.match(/^\w+([\.-]?[\w\+]+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
     return res.render('errors/invalid-email')
   }
   var user = new User();
+  
   user.account.email = req.body.email;
   user.save().then(() => {
     var fqdn = req.protocol + '://' + req.get('host');
 
     sendMail(user.account.email, `${fqdn}/user/activate/${user.account.activationcode}`);
-    res.send(req.body.email+"-"+req.body.password);
+    return res.render('user/verify-start', {email: user.account.email, title:"Check your Inbox"});
   }).catch((err) => {
     if (err.code==11000) {
       return res.render('errors/user-exists')
@@ -77,5 +87,13 @@ router.post('/signup', function(req, res, next) {
     next(err);
   })
   
+});
+
+router.get('/activate/:id', function(req, res, next) {
+  res.render('user/activate', { title: 'Activate Account' });
+});
+
+router.post('/activate/:id', function(req, res, next) {
+  res.render('user/activate', { title: 'Activate Account' });
 });
 module.exports = router;

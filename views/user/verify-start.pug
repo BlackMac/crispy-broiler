@@ -1,0 +1,13 @@
+extends ../layout-menubar
+
+block content
+    .row
+      .col.text-center
+        h1.mt-5= title
+    .row.text-center
+        .col
+            p I just sent you an email, to make sure that <strong>#{email}</strong> is your email address.
+            p In case my email does nott arrive please check your spam folder.
+    .row.justify-content-center
+        .col.col-3
+            img.img-fluid(src="/images/email.svg", alt="", srcset="")

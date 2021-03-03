@@ -1,3 +1,4 @@
+require('dotenv').config()
 var mongoose = require('mongoose');
 var createError = require('http-errors');
 var express = require('express');
@@ -6,11 +7,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var config = require('./config/config');
 
+
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 //var apiRouter = require('./routes/api');
 
-mongoose.connect('mongodb://localhost:27017/boatslist', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var app = express();
 
